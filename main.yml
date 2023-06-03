@@ -1,0 +1,24 @@
+---
+- name: installig vim & jq 
+  hosts: localhost
+  become: yes
+  vars:
+    packages_name: ["vim","jq"]
+    filename: user.txt
+  tasks:
+    - name: installing packages on ubuntu machine 
+      ansible.builtin.apt:
+        name: "{{packages_name}}"
+        state: present
+        update_cache: ture
+    - name: templating a file 
+      ansible.builtin.template:
+        src: template/user.txt
+        dest: home/"{{filename}}"
+    - name: cat the file content to stdout
+      ansible.builtin.shell:
+        cmd: cat /home/user.txt
+    - name: print the content to console
+      ansible.builtin.debug:
+        msg: "{{command_output_stdout}}"
+        
